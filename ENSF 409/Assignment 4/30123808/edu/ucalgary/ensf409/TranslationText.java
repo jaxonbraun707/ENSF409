@@ -1,5 +1,7 @@
 package edu.ucalgary.ensf409;
 
+import java.io.Serializable;
+
 /* TranslationText
  * Serializable representation of the data file. Has the serialVersionUID of 19.
 */
@@ -32,7 +34,7 @@ package edu.ucalgary.ensf409;
   */
 
 
-  public class TranslationText {
+  public class TranslationText implements Serializable{
     static final long serialVersionUID = 19L;
     private String[] months;
     private String[] days;
@@ -56,7 +58,11 @@ package edu.ucalgary.ensf409;
         return days;
     }
 
-    public String day(int index){
+    public String getDay(int index) {
+      return months[index];
+    }
+
+    public String getMonth(int index) {
       return days[index];
     }
   }

@@ -89,28 +89,31 @@ import java.io.ObjectOutputStream;
 
     public void importTranslation() throws ArgFileNotFoundException{
       File file = new File(langCode + ".ser");
+      File file1 = new File(langCode + ".txt");
       if (file.exists()){
-        deserialize(file);
+        deserialize();
       }
-      else {
+      else if (file1.exists()){
         importFromText();
+      }
+      else{
+        throw new ArgFileNotFoundException();
       }
     }
 
-    public void deserialize(File file) {
+    public void deserialize() {
       try {
+        File file = new File(langCode + ".ser");
         FileInputStream fileIn = new FileInputStream(file);
         ObjectInputStream in = new ObjectInputStream(fileIn);
         transText = (TranslationText) in.readObject();
         in.close();
         fileIn.close();
       } catch(IOException e) {
-        System.out.println("Error: Serialized translation text file not found.");
-        e.printStackTrace();
+        System.out.println("Error: Serialized translationtext file not found.");
         System.exit(1);
       } catch(ClassNotFoundException e) {
-        System.out.println("Error: Serialized translation text file does not contain a TranslationText object.");
-        e.printStackTrace();
+        System.out.println("Error: Serialized translationtext file does not contain a TranslationText object.");
         System.exit(1);
       }
     }
@@ -124,7 +127,6 @@ import java.io.ObjectOutputStream;
         fileOut.close();
       } catch (IOException e) {
         System.out.println("Error: TranslationText Serialized file cannot be created.");
-        e.printStackTrace();
         System.exit(1);
       }
     }
@@ -133,9 +135,6 @@ import java.io.ObjectOutputStream;
       String[] months = new String[12];
       String[] days = new String[31];
       File file = new File(langCode + ".txt");
-      if (!file.exists()){
-        throw new ArgFileNotFoundException();
-      }
       try {
         FileReader fileReader = new FileReader(file);
         BufferedReader reader = new BufferedReader(fileReader);
@@ -160,14 +159,14 @@ import java.io.ObjectOutputStream;
       if (month < 1 || month > 12 || day < 1 || day > 31) {
         throw new IllegalArgumentException("Error: The day or month to be translated is not a valid number representing a day or month.");
       }
-      String output = transText.getSentence();
-      output.replace("%1$s", transText.getDays()[day-1]);
-      output.replace("%2$s", transText.getMonths()[month-1]);
-      output.replace("%3$d", Integer.toString(year));
+      String dayOut = transText.getDays()[day-1];
+      String monthOut = transText.getMonths()[month-1];
+      String sentence = transText.getSentence();
+      String output = String.format(sentence, dayOut, monthOut, year);
       return output;
     }
 
-    public TranslationText getTransText() {
+    public TranslationText getTranslation() {
         return transText;
     }
   }

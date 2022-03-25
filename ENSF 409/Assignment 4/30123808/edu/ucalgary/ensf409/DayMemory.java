@@ -15,7 +15,11 @@ package edu.ucalgary.ensf409;
         if (args[0] == null) {
             throw new CommandArgumentNotProvidedException();
         }
+
         Translator translator = new Translator(args[0]);
         System.out.println(translator.translate(3, 8, 2021));
+
+
+
     }
   }
