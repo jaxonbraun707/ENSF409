@@ -10,8 +10,8 @@ import java.util.*;
 
 public class HouseholdParking extends CalgaryProperty {
     // Each residental property is allowed one street parking permit
-    private LinkedList<String> residentLicence = new LinkedList<String>();
-    private int maxLicences = 3;
+    private String residentLicence;
+    private VisitorParking visitors;
 
     public HouseholdParking(int taxRollNumber, String zoning, String streetName, int buildingNumber, String postCode, String buildingAnnex) throws IllegalArgumentException {
         super(taxRollNumber,zoning,streetName,buildingNumber,postCode,buildingAnnex);
@@ -29,23 +29,7 @@ public class HouseholdParking extends CalgaryProperty {
     */
     public void addOrReplaceResidentLicence(String licence) throws IllegalArgumentException {
         licence = Parking.standardizeAndValidateLicence(licence);
-        int len = residentLicence.size();
-
-        // If licence is already in the list, don't continue
-        for (String val : residentLicence) {
-            if (val.equals(licence)) {
-                return;
-            }
-        }
-
-        // If fewer than three are stored, add to list
-        if (len < maxLicences) {
-            residentLicence.add(licence);
- 
-        // If more than three are stored, replace last in list
-        } else {
-            this.residentLicence.set(maxLicences-1, licence);
-        }
+        this.residentLicence = licence;
     }
 
     /*
@@ -53,7 +37,7 @@ public class HouseholdParking extends CalgaryProperty {
      * @return whether the operation succeeded or not
     */
     public boolean removeResidentLicence() {
-        this.residentLicence.clear();
+        this.residentLicence = null;
         return true;
     }
 
@@ -62,33 +46,80 @@ public class HouseholdParking extends CalgaryProperty {
      * @param licence - the licence to be removed
      * @return whether the operation succeeded or not
     */
-    public boolean removeResidentLicence(String licence) {
-        // Standardize the licence name. If it is invalid, it can't exist so return false.
-        try {
-            licence = Parking.standardizeAndValidateLicence(licence);
-        }
-        catch (Exception e) {
-            return false;
-        }
 
-        for (int i=0; i < this.residentLicence.size(); i++) {
-            if (licence.equals(this.residentLicence.get(i))) {
-                this.residentLicence.remove(i);
-                return true;
-            }
-        }
 
-        // Couldn't find entry
-        return false;
-    }
+    // public boolean removeResidentLicence(String licence) {
+    //     // Standardize the licence name. If it is invalid, it can't exist so return false.
+    //     try {
+    //         licence = Parking.standardizeAndValidateLicence(licence);
+    //     }
+    //     catch (Exception e) {
+    //         return false;
+    //     }
+
+    //     for (int i=0; i < this.residentLicence.size(); i++) {
+    //         if (licence.equals(this.residentLicence.get(i))) {
+    //             this.residentLicence.remove(i);
+    //             return true;
+    //         }
+    //     }
+
+    //     // Couldn't find entry
+    //     return false;
+    // }
         
+
+
     /*
      * Get all the licences stored for the resident
      * @return An array containing the resident's licences
     */
-    public String[] getResidentLicence() {
-       String result[] = this.residentLicence.toArray(new String[maxLicences]);
-       return result;
+    public String getResidentLicence() {
+       return this.residentLicence;
+    }
+
+    public VisitorParking getVisitors() {
+        return this.visitors;
+    }
+
+    public void addVisitorReservation(String licence) {
+
+    }
+
+    public void addVisitorReservation(String licence, LocalDate date) {
+
+    }
+
+    public ArrayList<String> getLicencesRegisteredForDate() {
+        
+        ArrayList<String> tmp = new ArrayList<String>();
+        return tmp;
+    }
+
+    public ArrayList<String> getLicencesRegisteredForDate(LocalDate date) {
+        
+        ArrayList<String> tmp = new ArrayList<String>();
+        return tmp;
+    }    
+
+    public boolean licenceIsRegisteredForDate(String licence) {
+
+        return false;
+    }
+
+    public boolean licenceIsRegisteredForDate(String licence, LocalDate date) {
+
+        return false;
+    }
+
+    public String getAllDaysLicenceIsRegistered(String licence) {
+        
+        return "";
+    }
+
+    public String getStartDaysLicenceIsRegistered(String licence) {
+
+        return "";
     }
 
 }
